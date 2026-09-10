@@ -2,12 +2,12 @@ Using it in paying money....
 
 # Installation
 ```terminal
->$cd /whEre/yOur/downLoaDed/
+>$cd /whEre/yOur/file/downLoaDed/
 >$sudo cmake --install build
 ```
 or 
 ```terminal
->$cd /whEre/yOur/downLoaDed/
+>$cd /whEre/yOur/file/downLoaDed/
 >$rm -rf ./build
 >$cmake -S . -B build -G Ninja \
   -DCMAKE_BUILD_TYPE=Release \
