@@ -1,0 +1,2 @@
+/usr/lib/qt6/plugins/kwin/effects/plugins/proxyx_windtrail.so
+/usr/lib/qt6/plugins/kwin/effects/configs/kwin_proxyx_windtrail_config.so
