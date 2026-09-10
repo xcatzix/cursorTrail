@@ -16,7 +16,7 @@ or
 >$sudo cmake --install build
 ```
 # Source homepage: wesleyyach/windtrail 
-  * I modified CMakelists.txt here using tencent AI(yuanbao) 
+  * I modified CMakelists.txt here with using tencent AI(yuanbao) 
 
 # -----Detail below-----
 
