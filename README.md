@@ -1,3 +1,25 @@
+Using it in paying money....
+
+# Installation
+```terminal
+>$cd /whEre/yOur/downLoaDed/
+>$sudo cmake --install build
+```
+or 
+```terminal
+>$cd /whEre/yOur/downLoaDed/
+>$rm -rf ./build
+>$cmake -S . -B build -G Ninja \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_INSTALL_PREFIX=/usr
+>$cmake --build build -j"$(nproc)"
+>$sudo cmake --install build
+```
+# Source homepage: wesleyyach/windtrail 
+  * I modified CMakelists.txt here using tencent AI(yuanbao) 
+
+# -----Detail below-----
+
 # WindTrail
 
 **WindTrail** is a native KWin effect that draws a smooth, speed-reactive wind ribbon behind the mouse cursor on KDE Plasma Wayland.
