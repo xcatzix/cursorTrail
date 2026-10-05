@@ -1,0 +1,26 @@
+{
+    "KPlugin": {
+        "Id": "cursortrailon",
+        "Name": "cursorTrailOn - Animated Pointer And Cursor Trail",
+        "Name[zh_CN]": "cursorTrailOn - 鼠标指针与文本光标拖尾动画",
+        "Name[pt_BR]": "cursorTrailOn - Rastro Animado do Ponteiro e do Cursor",
+        "Description": "A smooth, customizable trail for the mouse pointer and the text cursor on KDE Plasma and KWin Wayland.",
+        "Description[zh_CN]": "适用于 KDE Plasma / KWin Wayland 的平滑、可自定义的鼠标指针与文本光标拖尾。",
+        "Description[pt_BR]": "Um rastro suave e personalizável para o ponteiro do mouse e o cursor de texto no KDE Plasma e KWin Wayland.",
+        "Category": "Appearance",
+        "EnabledByDefault": false,
+        "Icon": "input-mouse",
+        "License": "GPL-3.0-or-later",
+        "Version": "1.2.0",
+        "Authors": [
+            {
+                "Name": "xcatzix",
+                "Email": "3949745980@qq.com"
+            }
+        ],
+        "Website": "https://github.com/xcatzix",
+        "BugReportUrl": "https://github.com/xcatzix",
+        "Copyright": "Copyright 2026 xcatzix. Based on WindTrail, Copyright 2026 Wesley (ProxyX)"
+    },
+    "X-KDE-ConfigModule": "kwin_cursortrailon_config"
+}

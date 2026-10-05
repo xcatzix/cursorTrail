@@ -1,0 +1,2 @@
+/usr/lib/qt6/plugins/kwin/effects/plugins/cursortrailon.so
+/usr/lib/qt6/plugins/kwin/effects/configs/kwin_cursortrailon_config.so
