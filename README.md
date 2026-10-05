@@ -1,18 +1,18 @@
--- Author: xcatzix
--- mailto: 3949745980@qq.com
--- Version: test-v-1.1.0.0
--- Using it in paying money....
--- cursorTrail or cursorTrailOn based on windTrail,The README was only slightly modified....
--- cursorTrailOn added text cursor trail, see effectTrailOn.jpg; settup in setupTrailOn.png
--- 基本可以正常使用, glow color由于种种原因,现在不能自主修改, 自行让AI修改吧.
+-- Author: xcatzix  
+-- mailto: 3949745980@qq.com  
+-- Version: test-v-1.1.0.0  
+-- Using it in paying money....  
+-- cursorTrail or cursorTrailOn based on windTrail,The README was only slightly modified....  
+-- cursorTrailOn added text cursor trail, see effectTrailOn.jpg; settup in setupTrailOn.png....  
+-- 基本可以正常使用, glow color由于种种原因,现在不能自主修改, 自行让AI修改吧.  
 
-### Installation
+### Installation  
 -- Downloading , unzipping and then:
 ```terminal
 >$cd /whEre/yOur/file/downLoaDed/cursorTrailOn
 >$sudo cmake --install build
 ```
-or 
+or   
 ```terminal
 >$cd /whEre/yOur/file/downLoaDed/cursorTrailOn
 >$rm -rf ./build
@@ -22,13 +22,13 @@ or
 >$cmake --build build -j"$(nproc)"
 >$sudo cmake --install build
 ```
-### Uninstallation
+### Uninstallation  
 ```terminal
 >$sudo rm -rf /usr/lib/qt6/plugins/kwin/effects/plugins/cursortrailon.so
 >$sudo rm -rf /usr/lib/qt6/plugins/kwin/effects/configs/kwin_cursortrailon_config.so
 ```
 
-## detail below
+## detail below  
 
 ###  Source homepage: wesleyyach/windtrail 
 
