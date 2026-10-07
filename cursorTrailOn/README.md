@@ -1,9 +1,9 @@
--- Author: xcatzix
--- mailto: 3949745980@qq.com
--- Version: test-v-1.1.0.0
--- Using it in paying money....
--- cursorTrail or cursorTrailOn based windTrail,The README was only slightly modified....
--- cursorTrailOn add text cursor trail, see effectTrailOn.jpg; settup in setupTrailOn.png
+-- Author: xcatzix  
+-- mailto: 3949745980@qq.com  
+-- Version: test-v-1.1.0.0  
+-- Using it in paying money....  
+-- cursorTrail or cursorTrailOn based windTrail,The README was only slightly modified....  
+-- cursorTrailOn add text cursor trail, see effectTrailOn.jpg; settup in setupTrailOn.png  
 
 ### Installation
 -- Downloading and then:
