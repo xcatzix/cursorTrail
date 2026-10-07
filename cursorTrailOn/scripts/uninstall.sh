@@ -35,7 +35,12 @@ if $purge_settings; then
                ActivationSpeed Smoothness DisableInFullscreen \
                CaretColor CaretCoreColor CaretGlowColor CaretGlowEnabled \
                CaretIntensity CaretTrailHeight CaretMinSpeed \
-               CaretTrailDuration CaretPollInterval; do
+               CaretTrailDuration CaretPollInterval \
+               GradientEnabled GradientSmooth GradientStops LightEnabled \
+               LightStrength LightRadius HeadLight \
+               CaretGradientEnabled CaretGradientSmooth CaretGradientStops \
+               CaretLightEnabled CaretLightStrength CaretLightRadius \
+               CaretHeadLight; do
         kwriteconfig6 --file kwinrc \
             --group "Effect-${EFFECT_ID}" \
             --key "$key" --delete || true

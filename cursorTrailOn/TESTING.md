@@ -1,6 +1,6 @@
 # Testing report template
 
-> cursorTrailOn 1.2.0 (reworked caret trail, independent pointer/caret settings) was written without access to a KWin build environment and has not been compiled or run yet. Please fill this in on a real Plasma 6.7+ Wayland session.
+> cursorTrailOn 1.3.0 (gradient, light effect, 400 px settings page) was written without access to a KWin build environment and has not been compiled or run yet. Please fill this in on a real Plasma 6.7+ Wayland session.
 
 - Distribution:
 - Architecture:

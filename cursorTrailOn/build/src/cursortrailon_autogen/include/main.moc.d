@@ -1,7 +1,7 @@
-/home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/build/src/cursortrailon_autogen/include/main.moc: /home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/src/main.cpp \
-  /home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/build/src/cursortrailon_autogen/moc_predefs.h \
-  /home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/src/metadata.json \
-  /home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/src/cursortrailon.h \
+/home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/build/src/cursortrailon_autogen/include/main.moc: /home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/src/main.cpp \
+  /home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/build/src/cursortrailon_autogen/moc_predefs.h \
+  /home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/src/metadata.json \
+  /home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/src/cursortrailon.h \
   /usr/include/KF6/KConfig/kconfig_version.h \
   /usr/include/KF6/KConfigCore/KSharedConfig \
   /usr/include/KF6/KConfigCore/kconfig.h \

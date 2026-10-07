@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 
 readonly ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)"
-readonly VERSION="1.2.0"
+readonly VERSION="1.3.0"
 readonly NAME="cursortrailon-${VERSION}"
 readonly OUT_DIR="${1:-${ROOT_DIR}/dist}"
 

@@ -1,5 +1,5 @@
-/home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/build/src/kwin_cursortrailon_config_autogen/include/moc_cursortrailon_config.cpp: /home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/src/cursortrailon_config.h \
-  /home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/build/src/kwin_cursortrailon_config_autogen/moc_predefs.h \
+/home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/build/src/kwin_cursortrailon_config_autogen/include/moc_cursortrailon_config.cpp: /home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/src/cursortrailon_config.h \
+  /home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/build/src/kwin_cursortrailon_config_autogen/moc_predefs.h \
   /usr/include/KF6/KCMUtils/KCModule \
   /usr/include/KF6/KCMUtils/kcmodule.h \
   /usr/include/KF6/KCMUtils/kcmutils_export.h \
@@ -314,6 +314,7 @@
   /usr/include/pthread.h \
   /usr/include/qt6/QtCore/QExplicitlySharedDataPointer \
   /usr/include/qt6/QtCore/QJsonObject \
+  /usr/include/qt6/QtCore/QList \
   /usr/include/qt6/QtCore/QMetaType \
   /usr/include/qt6/QtCore/QObject \
   /usr/include/qt6/QtCore/QString \

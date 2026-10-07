@@ -1,4 +1,4 @@
-# Install script for directory: /home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/src
+# Install script for directory: /home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -57,7 +57,7 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "cursortrailon" OR NOT CMAKE_INSTALL_COMPONE
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/usr/lib/qt6/plugins/kwin/effects/plugins" TYPE MODULE FILES "/home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/build/bin/kwin/effects/plugins/cursortrailon.so")
+  file(INSTALL DESTINATION "/usr/lib/qt6/plugins/kwin/effects/plugins" TYPE MODULE FILES "/home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/build/bin/kwin/effects/plugins/cursortrailon.so")
   if(EXISTS "$ENV{DESTDIR}/usr/lib/qt6/plugins/kwin/effects/plugins/cursortrailon.so" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}/usr/lib/qt6/plugins/kwin/effects/plugins/cursortrailon.so")
     if(CMAKE_INSTALL_DO_STRIP)
@@ -67,7 +67,7 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "cursortrailon" OR NOT CMAKE_INSTALL_COMPONE
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "cursortrailon" OR NOT CMAKE_INSTALL_COMPONENT)
-  include("/home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/build/src/CMakeFiles/cursortrailon.dir/install-cxx-module-bmi-Release.cmake" OPTIONAL)
+  include("/home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/build/src/CMakeFiles/cursortrailon.dir/install-cxx-module-bmi-Release.cmake" OPTIONAL)
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "cursortrailon" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -85,7 +85,7 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "cursortrailon" OR NOT CMAKE_INSTALL_COMPONE
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/usr/lib/qt6/plugins/kwin/effects/configs" TYPE MODULE FILES "/home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/build/bin/kwin/effects/configs/kwin_cursortrailon_config.so")
+  file(INSTALL DESTINATION "/usr/lib/qt6/plugins/kwin/effects/configs" TYPE MODULE FILES "/home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/build/bin/kwin/effects/configs/kwin_cursortrailon_config.so")
   if(EXISTS "$ENV{DESTDIR}/usr/lib/qt6/plugins/kwin/effects/configs/kwin_cursortrailon_config.so" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}/usr/lib/qt6/plugins/kwin/effects/configs/kwin_cursortrailon_config.so")
     if(CMAKE_INSTALL_DO_STRIP)
@@ -95,12 +95,12 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "cursortrailon" OR NOT CMAKE_INSTALL_COMPONE
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "cursortrailon" OR NOT CMAKE_INSTALL_COMPONENT)
-  include("/home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/build/src/CMakeFiles/kwin_cursortrailon_config.dir/install-cxx-module-bmi-Release.cmake" OPTIONAL)
+  include("/home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/build/src/CMakeFiles/kwin_cursortrailon_config.dir/install-cxx-module-bmi-Release.cmake" OPTIONAL)
 endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/build/src/install_local_manifest.txt"
+  file(WRITE "/home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/build/src/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

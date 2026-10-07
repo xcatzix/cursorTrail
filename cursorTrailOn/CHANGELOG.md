@@ -1,5 +1,28 @@
 # Changelog
 
+## 1.3.0 — 2026-10-06
+
+### Added
+
+- Gradient trails: mix 2–6 colors along the trail (position 0 % = cursor,
+  100 % = end of trail), smooth blend or hard bands, presets (Sunset, Aurora,
+  Ocean, Rainbow, Fire, Neon). Independent for pointer and caret trail
+- Light effect (After Effects-style glow): additive bloom around the trail
+  with strength and radius, plus an optional light spot at the head
+- New `kwinrc` keys (prefix `Caret` for the caret trail): `GradientEnabled`,
+  `GradientSmooth`, `GradientStops` (`#rrggbb@pos;...`), `LightEnabled`,
+  `LightStrength`, `LightRadius` (%), `HeadLight`
+
+### Fixed
+
+- Glow color button could not be used: it was disabled together with the
+  "Outer glow" checkbox, but its style hid the disabled state. It is now always
+  usable (picking a color turns the glow on) and disabled buttons look disabled
+
+### Changed
+
+- Settings page opens 400 px high (scrollable, freely resizable)
+
 ## 1.2.0 — 2026-10-05
 
 Caret-trail rework and independent pointer/caret settings.

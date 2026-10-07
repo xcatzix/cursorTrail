@@ -39,6 +39,8 @@
 
 #include <QColor>
 #include <QList>
+#include <QString>
+#include <QStringList>
 #include <QTimer>
 #include <QVector2D>
 
@@ -118,6 +120,24 @@ void appendTriangle(QList<QVector2D> &vertices,
     vertices.push_back(QVector2D(c.x() * scale, c.y() * scale));
 }
 
+void appendDisc(QList<QVector2D> &vertices,
+                const QPointF &center,
+                qreal radius,
+                qreal scale)
+{
+    constexpr int Segments = 28;
+    const qreal step = 2.0 * M_PI / Segments;
+    for (int i = 0; i < Segments; ++i) {
+        const qreal a0 = i * step;
+        const qreal a1 = (i + 1) * step;
+        appendTriangle(vertices,
+                       center,
+                       center + QPointF(std::cos(a0), std::sin(a0)) * radius,
+                       center + QPointF(std::cos(a1), std::sin(a1)) * radius,
+                       scale);
+    }
+}
+
 } // namespace
 
 CursorTrailOnEffect::CursorTrailOnEffect()
@@ -156,14 +176,50 @@ void CursorTrailOnEffect::reconfigure(ReconfigureFlags)
         return color;
     };
 
-    m_mainColor = readColor("Color", QColor(255, 6, 12));
+    TrailStyle &ps = m_pointerStyle;
+    ps.main = readColor("Color", QColor(255, 6, 12));
     // Older configurations had no separate center/glow colors: derive them
     // from the main color exactly as before.
-    m_coreColor = readColor(
-        "CoreColor", mixColors(m_mainColor, QColor(255, 255, 255), 0.72));
-    m_glowColor = readColor(
-        "GlowColor", mixColors(m_mainColor, QColor(0, 0, 0), 0.28));
-    m_glowEnabled = group.readEntry("GlowEnabled", true);
+    ps.core = readColor(
+        "CoreColor", mixColors(ps.main, QColor(255, 255, 255), 0.72));
+    ps.glow = readColor(
+        "GlowColor", mixColors(ps.main, QColor(0, 0, 0), 0.28));
+    ps.glowEnabled = group.readEntry("GlowEnabled", true);
+    ps.intensity = std::clamp(group.readEntry("Intensity", 1.0), 0.15, 2.0);
+
+    // Gradient (mix of several colors) and light effect.
+    const auto readExtras = [&group](TrailStyle &style,
+                                     const QString &prefix,
+                                     const TrailStyle &fallback) {
+        style.gradientEnabled = group.readEntry(
+            prefix + QStringLiteral("GradientEnabled"), fallback.gradientEnabled);
+        style.gradientSmooth = group.readEntry(
+            prefix + QStringLiteral("GradientSmooth"), fallback.gradientSmooth);
+        style.stops = parseStops(group.readEntry(
+            prefix + QStringLiteral("GradientStops"), QString()));
+        if (style.stops.empty()) {
+            style.stops = fallback.stops;
+        }
+        if (style.stops.empty()) {
+            style.stops = {
+                {0.0, QColor(255, 61, 0)},
+                {0.5, QColor(255, 0, 153)},
+                {1.0, QColor(106, 0, 255)},
+            };
+        }
+
+        style.lightEnabled = group.readEntry(
+            prefix + QStringLiteral("LightEnabled"), fallback.lightEnabled);
+        style.lightStrength = std::clamp(group.readEntry(
+            prefix + QStringLiteral("LightStrength"), fallback.lightStrength),
+            0.1, 3.0);
+        style.lightRadius = std::clamp(group.readEntry(
+            prefix + QStringLiteral("LightRadius"), fallback.lightRadius * 100.0)
+            / 100.0, 0.5, 4.0);
+        style.headLight = group.readEntry(
+            prefix + QStringLiteral("HeadLight"), fallback.headLight);
+    };
+    readExtras(ps, QString(), TrailStyle());
 
     m_mouseEnabled = group.readEntry("MouseTrailEnabled", true);
 #ifdef CURSORTRAILON_HAVE_TEXT_INPUT
@@ -184,7 +240,6 @@ void CursorTrailOnEffect::reconfigure(ReconfigureFlags)
     trailWidth = std::clamp<qreal>(trailWidth, 2.0, 80.0);
     m_thickness = trailWidth / MouseWidthAtScaleOne;
 
-    m_intensity = std::clamp(group.readEntry("Intensity", 1.0), 0.15, 2.0);
     m_activationSpeed = std::clamp(
         qreal(group.readEntry("ActivationSpeed", 320)),
         qreal(100.0),
@@ -201,20 +256,22 @@ void CursorTrailOnEffect::reconfigure(ReconfigureFlags)
 
     // --- text caret trail: its own colors, duration and geometry. Missing
     // keys (settings saved by 1.1.x) fall back to the pointer-trail values.
-    m_caretMainColor = readColor("CaretColor", m_mainColor);
-    m_caretCoreColor = readColor(
+    TrailStyle &cs = m_caretStyle;
+    cs.main = readColor("CaretColor", ps.main);
+    cs.core = readColor(
         "CaretCoreColor",
         group.hasKey("CaretColor")
-            ? mixColors(m_caretMainColor, QColor(255, 255, 255), 0.72)
-            : m_coreColor);
-    m_caretGlowColor = readColor(
+            ? mixColors(cs.main, QColor(255, 255, 255), 0.72)
+            : ps.core);
+    cs.glow = readColor(
         "CaretGlowColor",
         group.hasKey("CaretColor")
-            ? mixColors(m_caretMainColor, QColor(0, 0, 0), 0.28)
-            : m_glowColor);
-    m_caretGlowEnabled = group.readEntry("CaretGlowEnabled", m_glowEnabled);
-    m_caretIntensity = std::clamp(
-        group.readEntry("CaretIntensity", m_intensity), 0.15, 2.0);
+            ? mixColors(cs.main, QColor(0, 0, 0), 0.28)
+            : ps.glow);
+    cs.glowEnabled = group.readEntry("CaretGlowEnabled", ps.glowEnabled);
+    cs.intensity = std::clamp(
+        group.readEntry("CaretIntensity", ps.intensity), 0.15, 2.0);
+    readExtras(cs, QStringLiteral("Caret"), ps);
     m_caretWidth = std::clamp<qreal>(
         group.readEntry("CaretTrailWidth", 8.0), 1.0, 60.0);
     m_caretMaxHeight = std::clamp<qreal>(
@@ -282,15 +339,31 @@ void CursorTrailOnEffect::paintScreen(const RenderTarget &renderTarget,
 
     if (drawMouse) {
         const std::vector<Sample> samples = smoothedSamples();
+        const TrailStyle &st = m_pointerStyle;
 
         if (samples.size() >= 2) {
-            if (m_glowEnabled) {
+            // Light effect first: additive bloom under the actual trail.
+            if (st.lightEnabled) {
+                const qreal r = st.lightRadius;
+                const qreal k = st.lightStrength * st.intensity;
+                drawRibbonPass(samples, renderTarget, viewport,
+                               6.0 * r * m_thickness, Paint::Light,
+                               0.020 * k, nowMs);
+                drawRibbonPass(samples, renderTarget, viewport,
+                               3.8 * r * m_thickness, Paint::Light,
+                               0.040 * k, nowMs);
+                drawRibbonPass(samples, renderTarget, viewport,
+                               2.2 * r * m_thickness, Paint::Light,
+                               0.075 * k, nowMs);
+            }
+
+            if (st.glowEnabled) {
                 drawRibbonPass(samples,
                                renderTarget,
                                viewport,
                                2.05 * m_thickness,
-                               m_glowColor,
-                               0.11 * m_intensity,
+                               Paint::Glow,
+                               0.11 * st.intensity,
                                nowMs);
             }
 
@@ -298,31 +371,71 @@ void CursorTrailOnEffect::paintScreen(const RenderTarget &renderTarget,
                            renderTarget,
                            viewport,
                            1.00 * m_thickness,
-                           m_mainColor,
-                           0.38 * m_intensity,
+                           Paint::Main,
+                           0.38 * st.intensity,
                            nowMs);
 
             drawRibbonPass(samples,
                            renderTarget,
                            viewport,
                            0.27 * m_thickness,
-                           m_coreColor,
-                           0.78 * m_intensity,
+                           Paint::Core,
+                           0.78 * st.intensity,
                            nowMs);
+
+            if (st.lightEnabled && st.headLight) {
+                const qreal newestAge = qreal(std::max<qint64>(
+                    0, nowMs - samples.back().timestampMs));
+                const qreal fade = clamp01(
+                    1.0 - newestAge / lifetimeForSpeed(samples.back().speed));
+                drawHeadLight(st, renderTarget, viewport,
+                              samples.back().position,
+                              MouseWidthAtScaleOne * m_thickness
+                                  * 0.9 * st.lightRadius,
+                              fade * st.lightStrength);
+            }
         }
     }
 
     if (drawCaret) {
-        if (m_caretGlowEnabled) {
+        const TrailStyle &st = m_caretStyle;
+
+        if (st.lightEnabled) {
+            const qreal r = st.lightRadius;
+            const qreal k = st.lightStrength * st.intensity;
+            drawCaretPass(renderTarget, viewport, 4.2 * r,
+                          Paint::Light, 0.020 * k, nowMs);
+            drawCaretPass(renderTarget, viewport, 2.8 * r,
+                          Paint::Light, 0.040 * k, nowMs);
+            drawCaretPass(renderTarget, viewport, 1.9 * r,
+                          Paint::Light, 0.075 * k, nowMs);
+        }
+
+        if (st.glowEnabled) {
             drawCaretPass(renderTarget, viewport, 1.6,
-                          m_caretGlowColor, 0.14 * m_caretIntensity, nowMs);
+                          Paint::Glow, 0.14 * st.intensity, nowMs);
         }
 
         drawCaretPass(renderTarget, viewport, 1.0,
-                      m_caretMainColor, 0.50 * m_caretIntensity, nowMs);
+                      Paint::Main, 0.50 * st.intensity, nowMs);
 
         drawCaretPass(renderTarget, viewport, 0.40,
-                      m_caretCoreColor, 0.85 * m_caretIntensity, nowMs);
+                      Paint::Core, 0.85 * st.intensity, nowMs);
+
+        if (st.lightEnabled && st.headLight) {
+            const CaretSample &last = m_caretSamples.back();
+            const qreal life = smoothStep(clamp01(
+                1.0 - qreal(std::max<qint64>(0, nowMs - last.timestampMs))
+                    / std::max<qreal>(1.0, qreal(m_caretDurationMs))));
+            drawHeadLight(st, renderTarget, viewport,
+                          last.rect.center(),
+                          std::max<qreal>(
+                              std::min(std::max<qreal>(last.rect.height(), 4.0),
+                                       m_caretMaxHeight) * 0.9,
+                              m_caretWidth)
+                              * st.lightRadius,
+                          life * st.lightStrength);
+        }
     }
 
     glDisable(GL_BLEND);
@@ -661,13 +774,15 @@ void CursorTrailOnEffect::drawRibbonPass(const std::vector<Sample> &samples,
                                          const RenderTarget &renderTarget,
                                          const RenderViewport &viewport,
                                          qreal widthScale,
-                                         const QColor &baseColor,
+                                         Paint paint,
                                          qreal baseAlpha,
                                          qint64 nowMs)
 {
     if (samples.size() < 2) {
         return;
     }
+
+    const TrailStyle &style = m_pointerStyle;
 
     const qint64 newestAgeMs = std::max<qint64>(
         0, nowMs - samples.back().timestampMs);
@@ -686,11 +801,13 @@ void CursorTrailOnEffect::drawRibbonPass(const std::vector<Sample> &samples,
         return;
     }
 
-    Buckets buckets;
+    const int bins = style.gradientEnabled ? GradientBins : 1;
+    Buckets buckets(std::size_t(AlphaBuckets * bins));
     const qreal scale = viewport.scale();
     const qreal widthSpeed = fullWidthSpeed();
+    const std::size_t segments = samples.size() - 1;
 
-    for (std::size_t index = 0; index + 1 < samples.size(); ++index) {
+    for (std::size_t index = 0; index < segments; ++index) {
         const Sample &a = samples[index];
         const Sample &b = samples[index + 1];
 
@@ -727,12 +844,18 @@ void CursorTrailOnEffect::drawRibbonPass(const std::vector<Sample> &samples,
             continue;
         }
 
-        const int bucket = std::clamp(
-            int(std::floor(segmentLife * qreal(buckets.size()))),
+        const int alphaBucket = std::clamp(
+            int(std::floor(segmentLife * qreal(AlphaBuckets))),
             0,
-            int(buckets.size()) - 1);
+            AlphaBuckets - 1);
 
-        appendQuad(buckets[bucket],
+        // Position along the trail: 0 at the newest sample, 1 at the oldest.
+        const qreal t = 1.0 - (qreal(index) + 0.5) / qreal(segments);
+        const int bin = bins == 1
+            ? 0
+            : std::clamp(int(t * bins), 0, bins - 1);
+
+        appendQuad(buckets[std::size_t(alphaBucket * bins + bin)],
                    a.position,
                    b.position,
                    widthA,
@@ -740,7 +863,8 @@ void CursorTrailOnEffect::drawRibbonPass(const std::vector<Sample> &samples,
                    scale);
     }
 
-    renderBuckets(buckets, renderTarget, viewport, baseColor, baseAlpha, stopFade);
+    renderBuckets(buckets, bins, style, paint, renderTarget, viewport,
+                  baseAlpha, stopFade, paint == Paint::Light);
 }
 
 // Each caret move is drawn as an isosceles triangle whose base sits on the
@@ -751,10 +875,12 @@ void CursorTrailOnEffect::drawRibbonPass(const std::vector<Sample> &samples,
 //     (moving left) edge, as tall as the caret, capped by "Maximum height";
 //   - vertical move: the base is the caret's top (moving down) or bottom
 //     (moving up) edge, "Caret trail width" wide.
+// With a gradient the triangle is cut into thin slices along its axis so every
+// slice can carry its own color.
 void CursorTrailOnEffect::drawCaretPass(const RenderTarget &renderTarget,
                                         const RenderViewport &viewport,
                                         qreal sizeFactor,
-                                        const QColor &baseColor,
+                                        Paint paint,
                                         qreal baseAlpha,
                                         qint64 nowMs)
 {
@@ -762,11 +888,16 @@ void CursorTrailOnEffect::drawCaretPass(const RenderTarget &renderTarget,
         return;
     }
 
-    Buckets buckets;
+    const TrailStyle &style = m_caretStyle;
+    constexpr int Slices = 12;
+
+    const int bins = style.gradientEnabled ? GradientBins : 1;
+    Buckets buckets(std::size_t(AlphaBuckets * bins));
     const qreal scale = viewport.scale();
     const qreal duration = std::max<qreal>(1.0, qreal(m_caretDurationMs));
+    const std::size_t segments = m_caretSamples.size() - 1;
 
-    for (std::size_t index = 0; index + 1 < m_caretSamples.size(); ++index) {
+    for (std::size_t index = 0; index < segments; ++index) {
         const CaretSample &a = m_caretSamples[index];
         const CaretSample &b = m_caretSamples[index + 1];
 
@@ -820,23 +951,98 @@ void CursorTrailOnEffect::drawCaretPass(const RenderTarget &renderTarget,
             apex = QPointF(apexX, apexY);
         }
 
-        const int bucket = std::clamp(
-            int(std::floor(tail * qreal(buckets.size()))),
+        const int alphaBucket = std::clamp(
+            int(std::floor(tail * qreal(AlphaBuckets))),
             0,
-            int(buckets.size()) - 1);
+            AlphaBuckets - 1);
 
-        appendTriangle(buckets[bucket], base1, base2, apex, scale);
+        if (bins == 1) {
+            appendTriangle(buckets[std::size_t(alphaBucket)],
+                           base1, base2, apex, scale);
+            continue;
+        }
+
+        // Newest segment is closest to the head of the gradient.
+        const qreal segmentOffset = qreal(segments - 1 - index);
+        for (int slice = 0; slice < Slices; ++slice) {
+            const qreal f0 = qreal(slice) / Slices;     // 0 = base
+            const qreal f1 = qreal(slice + 1) / Slices; // 1 = apex
+
+            const QPointF l0 = interpolatePoint(base1, apex, f0);
+            const QPointF r0 = interpolatePoint(base2, apex, f0);
+            const QPointF l1 = interpolatePoint(base1, apex, f1);
+            const QPointF r1 = interpolatePoint(base2, apex, f1);
+
+            const qreal t = (segmentOffset + (f0 + f1) * 0.5)
+                / qreal(segments);
+            const int bin = std::clamp(int(t * bins), 0, bins - 1);
+
+            QList<QVector2D> &list = buckets[std::size_t(alphaBucket * bins + bin)];
+            appendTriangle(list, l0, r0, r1, scale);
+            appendTriangle(list, l0, r1, l1, scale);
+        }
     }
 
-    renderBuckets(buckets, renderTarget, viewport, baseColor, baseAlpha, 1.0);
+    renderBuckets(buckets, bins, style, paint, renderTarget, viewport,
+                  baseAlpha, 1.0, paint == Paint::Light);
+}
+
+// A soft round light at the head of the trail: a few stacked, additively
+// blended discs approximate a radial falloff.
+void CursorTrailOnEffect::drawHeadLight(const TrailStyle &style,
+                                        const RenderTarget &renderTarget,
+                                        const RenderViewport &viewport,
+                                        const QPointF &center,
+                                        qreal radius,
+                                        qreal fade)
+{
+    if (fade <= 0.002 || radius < 1.0) {
+        return;
+    }
+
+    ShaderBinder binder(ShaderTrait::UniformColor
+                        | ShaderTrait::TransformColorspace);
+    binder.shader()->setUniform(
+        GLShader::Mat4Uniform::ModelViewProjectionMatrix,
+        viewport.projectionMatrix());
+    binder.shader()->setColorspaceUniforms(
+        ColorDescription::sRGB,
+        renderTarget.colorDescription(),
+        RenderingIntent::Perceptual);
+
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+
+    GLVertexBuffer *vbo = GLVertexBuffer::streamingBuffer();
+    const qreal scale = viewport.scale();
+    constexpr int Rings = 6;
+
+    QColor color = paintColor(style, Paint::Light, 0.0);
+
+    for (int ring = 0; ring < Rings; ++ring) {
+        const qreal f = qreal(ring + 1) / Rings; // 1/6 .. 1
+        QList<QVector2D> vertices;
+        appendDisc(vertices, center, radius * f, scale);
+
+        color.setAlphaF(clamp01(0.035 * style.intensity * fade));
+        binder.shader()->setUniform(GLShader::ColorUniform::Color, color);
+
+        vbo->reset();
+        vbo->setVertices(vertices);
+        vbo->render(GL_TRIANGLES);
+    }
+
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void CursorTrailOnEffect::renderBuckets(Buckets &buckets,
+                                        int bins,
+                                        const TrailStyle &style,
+                                        Paint paint,
                                         const RenderTarget &renderTarget,
                                         const RenderViewport &viewport,
-                                        const QColor &baseColor,
                                         qreal baseAlpha,
-                                        qreal fade)
+                                        qreal fade,
+                                        bool additive)
 {
     ShaderBinder binder(ShaderTrait::UniformColor
                         | ShaderTrait::TransformColorspace);
@@ -848,30 +1054,144 @@ void CursorTrailOnEffect::renderBuckets(Buckets &buckets,
         renderTarget.colorDescription(),
         RenderingIntent::Perceptual);
 
+    if (additive) {
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    }
+
     GLVertexBuffer *vbo = GLVertexBuffer::streamingBuffer();
 
-    for (std::size_t bucket = 0; bucket < buckets.size(); ++bucket) {
-        QList<QVector2D> &vertices = buckets[bucket];
+    for (int alphaBucket = 0; alphaBucket < AlphaBuckets; ++alphaBucket) {
+        const qreal bucketOpacity = std::pow(
+            qreal(alphaBucket + 1) / qreal(AlphaBuckets),
+            1.75);
 
-        if (vertices.isEmpty()) {
+        for (int bin = 0; bin < bins; ++bin) {
+            QList<QVector2D> &vertices
+                = buckets[std::size_t(alphaBucket * bins + bin)];
+
+            if (vertices.isEmpty()) {
+                continue;
+            }
+
+            const qreal t = bins == 1 ? 0.0 : (qreal(bin) + 0.5) / qreal(bins);
+            QColor color = paintColor(style, paint, t);
+            color.setAlphaF(clamp01(baseAlpha * bucketOpacity * fade));
+
+            binder.shader()->setUniform(
+                GLShader::ColorUniform::Color,
+                color);
+
+            vbo->reset();
+            vbo->setVertices(vertices);
+            vbo->render(GL_TRIANGLES);
+        }
+    }
+
+    if (additive) {
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
+}
+
+// Color of the gradient at position t (0 = head, 1 = tail).
+QColor CursorTrailOnEffect::gradientAt(const TrailStyle &style, qreal t)
+{
+    const std::vector<ColorStop> &stops = style.stops;
+    if (stops.empty()) {
+        return style.main;
+    }
+    if (stops.size() == 1) {
+        return stops.front().color;
+    }
+
+    t = clamp01(t);
+
+    if (t <= stops.front().position) {
+        return stops.front().color;
+    }
+    if (t >= stops.back().position) {
+        return stops.back().color;
+    }
+
+    for (std::size_t i = 0; i + 1 < stops.size(); ++i) {
+        const ColorStop &a = stops[i];
+        const ColorStop &b = stops[i + 1];
+        if (t >= a.position && t <= b.position) {
+            if (!style.gradientSmooth) {
+                return a.color; // hard stops: color changes at each position
+            }
+            const qreal span = b.position - a.position;
+            const qreal f = span > 1e-6 ? (t - a.position) / span : 0.0;
+            return mixColors(a.color, b.color, f);
+        }
+    }
+    return stops.back().color;
+}
+
+QColor CursorTrailOnEffect::paintColor(const TrailStyle &style,
+                                       Paint paint,
+                                       qreal t)
+{
+    QColor color;
+
+    switch (paint) {
+    case Paint::Main:
+        color = style.gradientEnabled ? gradientAt(style, t) : style.main;
+        break;
+    case Paint::Core:
+        // The bright center keeps its own color so the trail has a
+        // "hot" core whatever the gradient does around it.
+        color = style.core;
+        break;
+    case Paint::Glow:
+        color = style.gradientEnabled
+            ? mixColors(gradientAt(style, t), QColor(0, 0, 0), 0.28)
+            : style.glow;
+        break;
+    case Paint::Light:
+    default:
+        color = mixColors(
+            style.gradientEnabled ? gradientAt(style, t) : style.main,
+            QColor(255, 255, 255),
+            0.35);
+        break;
+    }
+
+    color.setAlpha(255);
+    return color;
+}
+
+// Parses "#rrggbb@0.0;#rrggbb@0.5;..." into position-sorted color stops.
+std::vector<CursorTrailOnEffect::ColorStop>
+CursorTrailOnEffect::parseStops(const QString &text)
+{
+    std::vector<ColorStop> stops;
+
+    const QStringList parts = text.split(QLatin1Char(';'), Qt::SkipEmptyParts);
+    for (const QString &part : parts) {
+        const QStringList pair = part.trimmed().split(QLatin1Char('@'));
+        const QColor color(pair.value(0).trimmed());
+        if (!color.isValid()) {
             continue;
         }
 
-        const qreal bucketOpacity = std::pow(
-            qreal(bucket + 1) / qreal(buckets.size()),
-            1.75);
+        bool ok = false;
+        qreal position = pair.value(1).toDouble(&ok);
+        if (!ok) {
+            position = 0.0;
+        }
 
-        QColor color = baseColor;
-        color.setAlphaF(clamp01(baseAlpha * bucketOpacity * fade));
-
-        binder.shader()->setUniform(
-            GLShader::ColorUniform::Color,
-            color);
-
-        vbo->reset();
-        vbo->setVertices(vertices);
-        vbo->render(GL_TRIANGLES);
+        ColorStop stop;
+        stop.position = clamp01(position);
+        stop.color = color;
+        stop.color.setAlpha(255);
+        stops.push_back(stop);
     }
+
+    std::stable_sort(stops.begin(), stops.end(),
+                     [](const ColorStop &a, const ColorStop &b) {
+                         return a.position < b.position;
+                     });
+    return stops;
 }
 
 QPointF CursorTrailOnEffect::interpolatePoint(const QPointF &a,

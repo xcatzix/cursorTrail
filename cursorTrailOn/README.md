@@ -50,6 +50,7 @@ Unlike classic mouse trails that repeat cursor images, cursorTrailOn generates a
 - **Three independent colors** (main, center, glow, or no glow) — set separately for the pointer trail and for the caret trail
 - **Adjustable trail width** for the mouse ribbon and for the caret trail
 - Crimson Slash, Wind White, Ice Blue and custom-color presets
+- **Gradient trails** (2–6 mixed colors, presets) and an **After-Effects-style light effect** (bloom + head light), separately for pointer and caret
 - Adjustable intensity, duration, activation speed and smoothing
 - Mouse trail and caret trail can be switched on/off independently
 - Native preview and configuration button in Plasma's Desktop Effects page
@@ -117,6 +118,8 @@ Then click the configuration button.
 | Caret minimum speed | Caret moves slower than this draw no trail (0 = no limit) |
 | Caret trail length / duration | How long the caret trail lasts (independent of the pointer) |
 | Caret query interval | How often the caret position is polled, 4–200 ms |
+| Use gradient, Gradient colors/positions, Smooth blend | Mix several colors along the trail (0 % = cursor, 100 % = tail) |
+| Light effect, strength, radius, head light | Additive bloom around the trail and a light spot at the head |
 | Main / Center / Glow color, Outer glow, Intensity | Provided **separately** for the pointer trail and the caret trail |
 
 Settings are stored in `~/.config/kwinrc` under `[Effect-cursortrailon]`.

@@ -1,29 +1,29 @@
 {
-	"BUILD_DIR" : "/home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/build/src/kwin_cursortrailon_config_autogen",
-	"CMAKE_BINARY_DIR" : "/home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/build",
-	"CMAKE_CURRENT_BINARY_DIR" : "/home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/build/src",
-	"CMAKE_CURRENT_SOURCE_DIR" : "/home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/src",
+	"BUILD_DIR" : "/home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/build/src/kwin_cursortrailon_config_autogen",
+	"CMAKE_BINARY_DIR" : "/home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/build",
+	"CMAKE_CURRENT_BINARY_DIR" : "/home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/build/src",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/src",
 	"CMAKE_EXECUTABLE" : "/usr/bin/cmake",
 	"CMAKE_LIST_FILES" : 
 	[
-		"/home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/src/CMakeLists.txt"
+		"/home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/src/CMakeLists.txt"
 	],
-	"CMAKE_SOURCE_DIR" : "/home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn",
+	"CMAKE_SOURCE_DIR" : "/home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn",
 	"CROSS_CONFIG" : false,
-	"DEP_FILE" : "/home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/build/src/kwin_cursortrailon_config_autogen/deps",
+	"DEP_FILE" : "/home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/build/src/kwin_cursortrailon_config_autogen/deps",
 	"DEP_FILE_RULE_NAME" : "kwin_cursortrailon_config_autogen/timestamp",
 	"HEADERS" : 
 	[
 		[
-			"/home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/src/cursortrailon_config.h",
+			"/home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/src/cursortrailon_config.h",
 			"Mu",
 			"EWIEGA46WW/moc_cursortrailon_config.cpp",
 			null
 		]
 	],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
-	"INCLUDE_DIR" : "/home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/build/src/kwin_cursortrailon_config_autogen/include",
-	"MOC_COMPILATION_FILE" : "/home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/build/src/kwin_cursortrailon_config_autogen/mocs_compilation.cpp",
+	"INCLUDE_DIR" : "/home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/build/src/kwin_cursortrailon_config_autogen/include",
+	"MOC_COMPILATION_FILE" : "/home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/build/src/kwin_cursortrailon_config_autogen/mocs_compilation.cpp",
 	"MOC_DEFINITIONS" : 
 	[
 		"KCOREADDONS_LIB",
@@ -49,8 +49,8 @@
 	],
 	"MOC_INCLUDES" : 
 	[
-		"/home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/build/src",
-		"/home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/src",
+		"/home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/build/src",
+		"/home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/src",
 		"/usr/include/qt6/QtDBus",
 		"/usr/include/qt6",
 		"/usr/include/qt6/QtCore",
@@ -96,29 +96,29 @@
 	[
 		"/usr/bin/c++",
 		"-std=c++20",
+		"-w",
 		"-dM",
 		"-E",
-		"-c",
 		"/usr/share/cmake/Modules/CMakeCXXCompilerABI.cpp"
 	],
-	"MOC_PREDEFS_FILE" : "/home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/build/src/kwin_cursortrailon_config_autogen/moc_predefs.h",
+	"MOC_PREDEFS_FILE" : "/home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/build/src/kwin_cursortrailon_config_autogen/moc_predefs.h",
 	"MOC_RELAXED_MODE" : false,
 	"MOC_SKIP" : 
 	[
-		"/home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/build/src/cursortrailon_autogen/mocs_compilation.cpp"
+		"/home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/build/src/cursortrailon_autogen/mocs_compilation.cpp"
 	],
 	"MULTI_CONFIG" : false,
 	"PARALLEL" : 12,
-	"PARSE_CACHE_FILE" : "/home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/build/src/CMakeFiles/kwin_cursortrailon_config_autogen.dir/ParseCache.txt",
+	"PARSE_CACHE_FILE" : "/home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/build/src/CMakeFiles/kwin_cursortrailon_config_autogen.dir/ParseCache.txt",
 	"QT_MOC_EXECUTABLE" : "/usr/lib/qt6/moc",
 	"QT_UIC_EXECUTABLE" : "",
 	"QT_VERSION_MAJOR" : 6,
 	"QT_VERSION_MINOR" : 11,
-	"SETTINGS_FILE" : "/home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/build/src/CMakeFiles/kwin_cursortrailon_config_autogen.dir/AutogenUsed.txt",
+	"SETTINGS_FILE" : "/home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/build/src/CMakeFiles/kwin_cursortrailon_config_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
 		[
-			"/home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/src/cursortrailon_config.cpp",
+			"/home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/src/cursortrailon_config.cpp",
 			"Mu",
 			null
 		]

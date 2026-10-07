@@ -10,6 +10,8 @@
 #include <KCModule>
 
 #include <QColor>
+#include <QList>
+#include <QString>
 
 class QCheckBox;
 class QComboBox;
@@ -18,12 +20,24 @@ class QFormLayout;
 class QPushButton;
 class QSlider;
 class QSpinBox;
+class QVBoxLayout;
 class QWidget;
 
 namespace KWin
 {
 
 class CursorTrailOnPreview;
+
+// One color of a trail gradient; percent 0 = at the cursor, 100 = end of trail.
+struct TrailGradientStop {
+    QColor color;
+    int percent = 0;
+
+    bool operator==(const TrailGradientStop &other) const
+    {
+        return color.rgb() == other.color.rgb() && percent == other.percent;
+    }
+};
 
 class CursorTrailOnConfig final : public KCModule
 {
@@ -42,7 +56,7 @@ private Q_SLOTS:
     void settingsChanged();
 
 private:
-    // Pointer trail and caret trail each have their own complete color set.
+    // Pointer trail and caret trail each have their own complete look.
     enum class Target {
         Pointer,
         Caret,
@@ -62,13 +76,43 @@ private:
         bool operator==(const Palette &other) const;
     };
 
-    struct ColorWidgets {
+    // Colors, gradient and light effect of one kind of trail.
+    struct Look {
+        Palette palette;
+        bool glowEnabled = true;
+        qreal intensity = 1.0;
+
+        bool gradientEnabled = false;
+        bool gradientSmooth = true;
+        QList<TrailGradientStop> stops;
+
+        bool lightEnabled = false;
+        qreal lightStrength = 1.0;
+        int lightRadius = 100; // percent
+        bool headLight = false;
+
+        bool operator==(const Look &other) const;
+    };
+
+    struct LookWidgets {
         QComboBox *preset = nullptr;
         QPushButton *mainButton = nullptr;
         QPushButton *coreButton = nullptr;
         QPushButton *glowButton = nullptr;
         QCheckBox *glowEnabled = nullptr;
         QDoubleSpinBox *intensity = nullptr;
+
+        QCheckBox *gradientEnabled = nullptr;
+        QComboBox *gradientPreset = nullptr;
+        QCheckBox *gradientSmooth = nullptr;
+        QWidget *stopsHost = nullptr;
+        QVBoxLayout *stopsLayout = nullptr;
+        QPushButton *addStop = nullptr;
+
+        QCheckBox *lightEnabled = nullptr;
+        QDoubleSpinBox *lightStrength = nullptr;
+        QSpinBox *lightRadius = nullptr;
+        QCheckBox *headLight = nullptr;
     };
 
     struct Settings {
@@ -76,18 +120,14 @@ private:
         bool caretEnabled = true;
 
         // --- pointer trail
-        Palette palette;
-        bool glowEnabled = true;
-        qreal intensity = 1.0;
+        Look pointer;
         int trailWidth = 18;
         int trailDuration = 330;
         int activationSpeed = 320;
         int smoothness = 2;
 
         // --- caret trail
-        Palette caretPalette;
-        bool caretGlowEnabled = true;
-        qreal caretIntensity = 1.0;
+        Look caret;
         int caretWidth = 8;
         int caretHeight = 40;
         int caretMinSpeed = 0;
@@ -102,24 +142,32 @@ private:
 
     static Palette presetPalette(int index);
     static Palette derivedPalette(const QColor &main);
-    static Settings defaultSettings();
     static int presetForPalette(const Palette &palette);
+    static QList<TrailGradientStop> gradientPresetStops(int index);
+    static int gradientPresetFor(const QList<TrailGradientStop> &stops);
+    static Look defaultLook();
+    static Settings defaultSettings();
 
     Settings readSettings() const;
     Settings currentSettings() const;
     void applySettings(const Settings &settings);
 
-    void buildColorRows(QFormLayout *form, QWidget *parent, Target target);
-    ColorWidgets &widgetsFor(Target target);
+    void buildLookRows(QFormLayout *form, QWidget *parent, Target target);
+    LookWidgets &widgetsFor(Target target);
     Palette &paletteFor(Target target);
+    QList<TrailGradientStop> &stopsFor(Target target);
     void chooseColor(Target target, ColorRole role);
+    void chooseStopColor(Target target, int index);
     void presetChanged(Target target, int index);
+    void gradientPresetChanged(Target target, int index);
+    void rebuildStopRows(Target target);
     void updateColorButtons(Target target);
     void updatePreview();
     void updateEnabledStates();
     void updateState();
 
-    QWidget *makeSliderRow(QSlider *&slider,
+    QWidget *makeSliderRow(QWidget *parent,
+                           QSlider *&slider,
                            QSpinBox *&spin,
                            int minimum,
                            int maximum);
@@ -127,8 +175,8 @@ private:
     QCheckBox *m_mouseEnabled = nullptr;
     QCheckBox *m_caretEnabled = nullptr;
 
-    ColorWidgets m_pointerColors;
-    ColorWidgets m_caretColors;
+    LookWidgets m_pointerWidgets;
+    LookWidgets m_caretWidgets;
 
     QSlider *m_trailWidthSlider = nullptr;
     QSpinBox *m_trailWidth = nullptr;
@@ -149,6 +197,8 @@ private:
 
     Palette m_pointerPalette;
     Palette m_caretPalette;
+    QList<TrailGradientStop> m_pointerStops;
+    QList<TrailGradientStop> m_caretStops;
     Settings m_savedSettings;
     bool m_loading = false;
 };

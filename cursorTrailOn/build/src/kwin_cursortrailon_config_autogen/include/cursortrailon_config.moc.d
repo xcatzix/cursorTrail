@@ -1,6 +1,6 @@
-/home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/build/src/kwin_cursortrailon_config_autogen/include/cursortrailon_config.moc: /home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/src/cursortrailon_config.cpp \
-  /home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/build/src/kwin_cursortrailon_config_autogen/moc_predefs.h \
-  /home/giqorg/Share/UploadGithup/cursorTrailOn-Source-v1/cursorTrailOn/src/cursortrailon_config.h \
+/home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/build/src/kwin_cursortrailon_config_autogen/include/cursortrailon_config.moc: /home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/src/cursortrailon_config.cpp \
+  /home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/build/src/kwin_cursortrailon_config_autogen/moc_predefs.h \
+  /home/giqorg/Share/UploadGithup/cursorTrailOn/cursorTrailOnSource-v1/cursorTrailOn/src/cursortrailon_config.h \
   /usr/include/KF6/KCMUtils/KCModule \
   /usr/include/KF6/KCMUtils/kcmodule.h \
   /usr/include/KF6/KCMUtils/kcmutils_export.h \
@@ -328,6 +328,7 @@
   /usr/include/qt6/QtCore/QExplicitlySharedDataPointer \
   /usr/include/qt6/QtCore/QIODevice \
   /usr/include/qt6/QtCore/QJsonObject \
+  /usr/include/qt6/QtCore/QList \
   /usr/include/qt6/QtCore/QMetaType \
   /usr/include/qt6/QtCore/QObject \
   /usr/include/qt6/QtCore/QPoint \
@@ -500,6 +501,7 @@
   /usr/include/qt6/QtGui/QPainterPath \
   /usr/include/qt6/QtGui/QPalette \
   /usr/include/qt6/QtGui/QPolygonF \
+  /usr/include/qt6/QtGui/QRadialGradient \
   /usr/include/qt6/QtGui/qaction.h \
   /usr/include/qt6/QtGui/qbitmap.h \
   /usr/include/qt6/QtGui/qbrush.h \
@@ -542,13 +544,17 @@
   /usr/include/qt6/QtWidgets/QHBoxLayout \
   /usr/include/qt6/QtWidgets/QLabel \
   /usr/include/qt6/QtWidgets/QLayout \
+  /usr/include/qt6/QtWidgets/QLayoutItem \
   /usr/include/qt6/QtWidgets/QPushButton \
+  /usr/include/qt6/QtWidgets/QScrollArea \
+  /usr/include/qt6/QtWidgets/QScrollBar \
   /usr/include/qt6/QtWidgets/QSlider \
   /usr/include/qt6/QtWidgets/QSpinBox \
   /usr/include/qt6/QtWidgets/QVBoxLayout \
   /usr/include/qt6/QtWidgets/QWidget \
   /usr/include/qt6/QtWidgets/qabstractbutton.h \
   /usr/include/qt6/QtWidgets/qabstractitemdelegate.h \
+  /usr/include/qt6/QtWidgets/qabstractscrollarea.h \
   /usr/include/qt6/QtWidgets/qabstractslider.h \
   /usr/include/qt6/QtWidgets/qabstractspinbox.h \
   /usr/include/qt6/QtWidgets/qboxlayout.h \
@@ -565,6 +571,8 @@
   /usr/include/qt6/QtWidgets/qlayoutitem.h \
   /usr/include/qt6/QtWidgets/qpushbutton.h \
   /usr/include/qt6/QtWidgets/qrubberband.h \
+  /usr/include/qt6/QtWidgets/qscrollarea.h \
+  /usr/include/qt6/QtWidgets/qscrollbar.h \
   /usr/include/qt6/QtWidgets/qsizepolicy.h \
   /usr/include/qt6/QtWidgets/qslider.h \
   /usr/include/qt6/QtWidgets/qspinbox.h \

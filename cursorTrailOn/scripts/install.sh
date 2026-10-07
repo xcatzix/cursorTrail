@@ -23,7 +23,7 @@ for command_name in cmake ninja qtpaths6 kwriteconfig6 kreadconfig6 gdbus sudo; 
     require_command "$command_name"
 done
 
-printf '== cursorTrailOn 1.2.0 ==\n\n'
+printf '== cursorTrailOn 1.3.0 ==\n\n'
 
 plasma_version="$(plasmashell --version 2>/dev/null | awk '{print $2}' || true)"
 kwin_version="$(kwin_wayland --version 2>/dev/null | awk '{print $2}' || true)"

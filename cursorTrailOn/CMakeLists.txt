@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(cursortrailon VERSION 1.2.0 LANGUAGES CXX)
+project(cursortrailon VERSION 1.3.0 LANGUAGES CXX)
 
 # --- Pin Qt 6 (must happen BEFORE the first find_package() call) -------------
 # Qt6QmlMacros.cmake only creates the versionless qt_* commands when

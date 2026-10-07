@@ -27,6 +27,6 @@ The text-input headers come from `kwin-devel`. The top-level `CMakeLists.txt` ch
 
 Settings are stored in `~/.config/kwinrc` under `Effect-cursortrailon`:
 
-`MouseTrailEnabled`, `TextCaretEnabled`, `Color`, `CoreColor`, `GlowColor`, `GlowEnabled`, `TrailWidth`, `Intensity`, `TrailDuration`, `ActivationSpeed`, `Smoothness`, `DisableInFullscreen` (pointer trail); `CaretColor`, `CaretCoreColor`, `CaretGlowColor`, `CaretGlowEnabled`, `CaretIntensity`, `CaretTrailWidth`, `CaretTrailHeight`, `CaretMinSpeed`, `CaretTrailDuration`, `CaretPollInterval` (caret trail).
+`MouseTrailEnabled`, `TextCaretEnabled`, `Color`, `CoreColor`, `GlowColor`, `GlowEnabled`, `TrailWidth`, `Intensity`, `TrailDuration`, `ActivationSpeed`, `Smoothness`, `DisableInFullscreen` (pointer trail); `CaretColor`, `CaretCoreColor`, `CaretGlowColor`, `CaretGlowEnabled`, `CaretIntensity`, `CaretTrailWidth`, `CaretTrailHeight`, `CaretMinSpeed`, `CaretTrailDuration`, `CaretPollInterval` (caret trail). Both trails also accept `GradientEnabled`, `GradientSmooth`, `GradientStops`, `LightEnabled`, `LightStrength`, `LightRadius`, `HeadLight` (with the `Caret` prefix for the caret trail).
 
 The configuration module asks KWin to call `reconfigureEffect("cursortrailon")` over D-Bus after Apply, so ordinary setting changes do not require rebuilding or restarting the session.

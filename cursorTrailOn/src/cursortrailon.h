@@ -17,6 +17,7 @@
 
 #include <array>
 #include <deque>
+#include <functional>
 #include <vector>
 
 class QTimer;
@@ -53,7 +54,41 @@ private Q_SLOTS:
     void pollTextCaret();
 
 private:
-    using Buckets = std::array<QList<QVector2D>, 8>;
+    // Geometry is grouped by (fade bucket x color bin) so that each group can
+    // be drawn with a single uniform color.
+    static constexpr int AlphaBuckets = 8;
+    static constexpr int GradientBins = 24;
+    using Buckets = std::vector<QList<QVector2D>>;
+
+    struct ColorStop {
+        qreal position = 0.0; // 0 = head (at the cursor), 1 = tail
+        QColor color;
+    };
+
+    // Everything that defines how one kind of trail (pointer or caret) looks.
+    struct TrailStyle {
+        QColor main = QColor(255, 6, 12);
+        QColor core = QColor(255, 185, 187);
+        QColor glow = QColor(184, 4, 9);
+        bool glowEnabled = true;
+        qreal intensity = 1.0;
+
+        bool gradientEnabled = false;
+        bool gradientSmooth = true;
+        std::vector<ColorStop> stops;
+
+        bool lightEnabled = false;  // additive bloom around the trail
+        qreal lightStrength = 1.0;
+        qreal lightRadius = 1.0;    // multiplier of the bloom size
+        bool headLight = false;     // soft light spot at the cursor
+    };
+
+    enum class Paint {
+        Main,
+        Core,
+        Glow,
+        Light,
+    };
 
     struct Sample {
         QPointF position;
@@ -86,23 +121,37 @@ private:
                         const RenderTarget &renderTarget,
                         const RenderViewport &viewport,
                         qreal widthScale,
-                        const QColor &baseColor,
+                        Paint paint,
                         qreal baseAlpha,
                         qint64 nowMs);
 
     void drawCaretPass(const RenderTarget &renderTarget,
                        const RenderViewport &viewport,
                        qreal sizeFactor,
-                       const QColor &baseColor,
+                       Paint paint,
                        qreal baseAlpha,
                        qint64 nowMs);
 
-    void renderBuckets(Buckets &buckets,
+    void drawHeadLight(const TrailStyle &style,
                        const RenderTarget &renderTarget,
                        const RenderViewport &viewport,
-                       const QColor &baseColor,
-                       qreal baseAlpha,
+                       const QPointF &center,
+                       qreal radius,
                        qreal fade);
+
+    void renderBuckets(Buckets &buckets,
+                       int bins,
+                       const TrailStyle &style,
+                       Paint paint,
+                       const RenderTarget &renderTarget,
+                       const RenderViewport &viewport,
+                       qreal baseAlpha,
+                       qreal fade,
+                       bool additive);
+
+    static QColor gradientAt(const TrailStyle &style, qreal t);
+    static QColor paintColor(const TrailStyle &style, Paint paint, qreal t);
+    static std::vector<ColorStop> parseStops(const QString &text);
 
     static QPointF interpolatePoint(const QPointF &a, const QPointF &b, qreal t);
     static qreal interpolateValue(qreal a, qreal b, qreal t);
@@ -129,27 +178,19 @@ private:
     qint64 m_lastCaretChangeMs = 0;
 
     // --- settings: mouse pointer trail -------------------------------------
-    QColor m_mainColor = QColor(255, 6, 12);
-    QColor m_coreColor = QColor(255, 185, 187);
-    QColor m_glowColor = QColor(184, 4, 9);
-    bool m_glowEnabled = true;
+    TrailStyle m_pointerStyle;
 
     bool m_mouseEnabled = true;
     bool m_caretEnabled = true;
 
     qreal m_thickness = 1.0;      // derived from the "Trail width" setting
-    qreal m_intensity = 1.0;
     qreal m_activationSpeed = 320.0;
     qint64 m_trailDurationMs = 330;
     int m_smoothingPasses = 2;
     bool m_disableInFullscreen = true;
 
     // --- settings: text caret trail (independent of the mouse trail) --------
-    QColor m_caretMainColor = QColor(255, 6, 12);
-    QColor m_caretCoreColor = QColor(255, 185, 187);
-    QColor m_caretGlowColor = QColor(184, 4, 9);
-    bool m_caretGlowEnabled = true;
-    qreal m_caretIntensity = 1.0;
+    TrailStyle m_caretStyle;
     qreal m_caretWidth = 8.0;       // px, base width of the vertical-move trail
     qreal m_caretMaxHeight = 40.0;  // px, maximum base height of the trail
     qreal m_caretMinSpeed = 0.0;    // px/s, slower caret moves draw no trail
